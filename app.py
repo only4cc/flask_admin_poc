@@ -1,3 +1,5 @@
+#https://flask-admin.readthedocs.io/en/latest/introduction/#working-with-the-built-in-templates
+
 from flask import Flask
 from flask_admin import Admin
 ### conda install -c anaconda werkzeug=0.16.1
@@ -7,13 +9,26 @@ from flask_sqlalchemy import SQLAlchemy
 #from flask.ext.babelex import Babel
 from flask_admin import BaseView, expose
 
-app = Flask(__name__)
+# Internacionalizacion i18n
+from flask_babelex import Babel
+from flask import request
+#from flask.ext.babelex import Babel
 
-app.config['SECRET_KEY'] = 'secreta'
-app.config['FLASK_ADMIN_SWATCH'] = 'Slate' # 'darkly'  # set optional bootswatch theme
+
+app = Flask(__name__)
+babel = Babel(app)
+
+app.config['SECRET_KEY']              = 'secreta'
+app.config['FLASK_ADMIN_SWATCH']      = 'Slate' # 'darkly'  # set optional bootswatch theme
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/crud/flask_admin_poc/admin.db' #C:\tmp\crud\last
 
+
 db = SQLAlchemy(app)
+
+# Definicion del Lenguage a usar
+@babel.localeselector
+def get_locale():
+    return 'es'
 
 class contactos(db.Model):
     __tablename__ = 'contact'
